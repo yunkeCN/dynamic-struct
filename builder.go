@@ -75,7 +75,7 @@ type (
 		//
 		NewSliceOfStructs() interface{}
 
-		NewNonePointerSliceOfStructs() interface{}
+		NewNonPointerSliceOfStructs() interface{}
 
 		// New provides new map of defined dynamic struct with desired key type.
 		//
@@ -83,7 +83,7 @@ type (
 		//
 		NewMapOfStructs(key interface{}) interface{}
 
-		NewNonePointerMapOfStructs(key interface{}) interface{}
+		NewNonPointerMapOfStructs(key interface{}) interface{}
 	}
 
 	builderImpl struct {
@@ -221,7 +221,7 @@ func (ds *dynamicStructImpl) NewSliceOfStructs() interface{} {
 	return reflect.New(reflect.SliceOf(ds.definition)).Interface()
 }
 
-func (ds *dynamicStructImpl) NewNonePointerSliceOfStructs() interface{} {
+func (ds *dynamicStructImpl) NewNonPointerSliceOfStructs() interface{} {
 	return reflect.MakeSlice(reflect.SliceOf(ds.definition), 0, 0).Interface()
 }
 
@@ -229,6 +229,6 @@ func (ds *dynamicStructImpl) NewMapOfStructs(key interface{}) interface{} {
 	return reflect.New(reflect.MapOf(reflect.Indirect(reflect.ValueOf(key)).Type(), ds.definition)).Interface()
 }
 
-func (ds *dynamicStructImpl) NewNonePointerMapOfStructs(key interface{}) interface{} {
+func (ds *dynamicStructImpl) NewNonPointerMapOfStructs(key interface{}) interface{} {
 	return reflect.MakeMap(reflect.MapOf(reflect.Indirect(reflect.ValueOf(key)).Type(), ds.definition)).Interface()
 }
