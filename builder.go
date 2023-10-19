@@ -103,7 +103,6 @@ type (
 // for defining fresh dynamic struct.
 //
 // builder := dynamicstruct.NewStruct()
-//
 func NewStruct() Builder {
 	return &builderImpl{
 		fields: []*fieldConfigImpl{},
@@ -114,7 +113,6 @@ func NewStruct() Builder {
 // returns new instance of Builder interface.
 //
 // builder := dynamicstruct.MergeStructs(MyStruct{})
-//
 func ExtendStruct(value interface{}) Builder {
 	return MergeStructs(value)
 }
@@ -123,7 +121,6 @@ func ExtendStruct(value interface{}) Builder {
 // returns new instance of Builder interface.
 //
 // builder := dynamicstruct.MergeStructs(MyStructOne{}, MyStructTwo{}, MyStructThree{})
-//
 func MergeStructs(values ...interface{}) Builder {
 	builder := NewStruct()
 
@@ -220,6 +217,14 @@ func (ds *dynamicStructImpl) NewSliceOfStructs() interface{} {
 	return reflect.New(reflect.SliceOf(ds.definition)).Interface()
 }
 
+func (ds *dynamicStructImpl) NewNoPointerSliceOfStructs() interface{} {
+	return reflect.MakeSlice(reflect.SliceOf(ds.definition), 0, 0).Interface()
+}
+
 func (ds *dynamicStructImpl) NewMapOfStructs(key interface{}) interface{} {
 	return reflect.New(reflect.MapOf(reflect.Indirect(reflect.ValueOf(key)).Type(), ds.definition)).Interface()
+}
+
+func (ds *dynamicStructImpl) NewNoPointerMapOfStructs(key interface{}) interface{} {
+	return reflect.MakeMap(reflect.MapOf(reflect.Indirect(reflect.ValueOf(key)).Type(), ds.definition)).Interface()
 }
